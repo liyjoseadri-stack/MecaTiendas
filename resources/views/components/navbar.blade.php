@@ -1,43 +1,19 @@
-<?php
+<nav class="bg-blue-900 text-white px-4 py-3 shadow">
+    <div class="container mx-auto flex items-center justify-between">
+        <a href="{{ route('dashboard.cliente') }}" class="font-bold text-xl">MecaTiendas</a>
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    
-    // --- RUTAS QUE PIDE TU NAVBAR ---
-    
-    // Dashboard Cliente (Este es el que te marcaba error)
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard.cliente'); 
-
-    // Dashboard Empleado
-    Route::get('/empleado/dashboard', function () {
-        return view('empleado');
-    })->name('dashboard.empleado');
-
-    // Dashboard Gerente
-    Route::get('/gerente/dashboard', function () {
-        return view('gerente');
-    })->name('dashboard.gerente');
-
-    // --- CRUD Y PERFIL ---
-    Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
-    
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-// Ruta extra para que el logo de Breeze no truene si busca 'dashboard' a secas
-Route::get('/home', function() {
-    return redirect()->route('dashboard.cliente');
-})->name('dashboard');
-
-require __DIR__.'/auth.php';
+        <div class="space-x-4">
+            <a href="{{ route('dashboard.cliente') }}" class="hover:text-gray-200">Inicio</a>
+            @auth
+                <a href="{{ route('usuarios.index') }}" class="hover:text-gray-200">Usuarios</a>
+                <a href="{{ route('dashboard.empleado') }}" class="hover:text-gray-200">Empleado</a>
+                <a href="{{ route('dashboard.gerente') }}" class="hover:text-gray-200">Gerente</a>
+                <a href="{{ route('profile.edit') }}" class="hover:text-gray-200">Perfil</a>
+            @endauth
+            @guest
+                <a href="{{ route('login') }}" class="hover:text-gray-200">Iniciar sesión</a>
+                <a href="{{ route('register') }}" class="hover:text-gray-200">Registrarse</a>
+            @endguest
+        </div>
+    </div>
+</nav>
