@@ -10,34 +10,33 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     
-    // PERFIL
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // --- RUTAS DE DASHBOARD (Nombres para tu Navbar) ---
-
-    // Cambiamos 'dashboard' a 'dashboard.cliente' para que tu Navbar lo encuentre
+    // --- RUTAS QUE PIDE TU NAVBAR ---
+    
+    // Dashboard Cliente (Este es el que te marcaba error)
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard.cliente'); 
 
-    // Ruta para Empleados
+    // Dashboard Empleado
     Route::get('/empleado/dashboard', function () {
         return view('empleado');
     })->name('dashboard.empleado');
 
-    // Ruta para Gerentes
+    // Dashboard Gerente
     Route::get('/gerente/dashboard', function () {
         return view('gerente');
     })->name('dashboard.gerente');
 
-    // CRUD de Usuarios
+    // --- CRUD Y PERFIL ---
     Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
+    
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Esto es un "parche" para que los componentes de Breeze no fallen
-Route::get('/redirect-me', function () {
+// Ruta extra para que el logo de Breeze no truene si busca 'dashboard' a secas
+Route::get('/home', function() {
     return redirect()->route('dashboard.cliente');
 })->name('dashboard');
 
